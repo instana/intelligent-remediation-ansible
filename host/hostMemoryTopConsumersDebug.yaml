@@ -1,0 +1,13 @@
+
+- name: "Playbook to print top 10 memory usage process on linux servers"
+  hosts: all
+  become: true
+  tasks:
+    - name: "Print top 10 memory usage process on linux servers"
+      shell: "ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -10"
+      register: result
+
+    - name: "Print the output"
+      debug:
+        msg: "{{ result.stdout_lines }}"
+

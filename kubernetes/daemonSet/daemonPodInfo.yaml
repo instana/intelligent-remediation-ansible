@@ -1,0 +1,32 @@
+- hosts: all
+  module_defaults:
+    group/k8s:
+      host: "{{host_api_server}}"
+      validate_certs: no
+  tasks:
+       - name: Print the gateway for each host when defined
+         ansible.builtin.debug:
+           msg: Host api server {{host_api_server}}
+       - name: Obtain access token
+         k8s_auth:
+           host: "{{host_api_server}}"
+           validate_certs: no
+           username: "{{username}}"
+           password: "{{password}}"
+         register: k8s_auth_results
+       - name: Get DaemonSet Information
+         kubernetes.core.k8s_info:
+           api_version: "{{ api_version }}"
+           api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+           kind: "DaemonSet"
+           name: "{{ daemonset_name }}"
+           namespace: "{{ namespace }}"
+         register: kind_info
+       - name: Display DaemonSet info
+         debug:
+           var: kind_info      
+       - name: Display Pod status for DaemonSet
+         debug:
+           var: kind_info | json_query('resources[].status')
+
+

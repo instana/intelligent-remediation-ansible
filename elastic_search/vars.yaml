@@ -1,0 +1,4 @@
+es_server: <Elasticsearch API Server>
+es_port: <Elasticsearch API Server Port>
+es_username: <Elasticsearch User Name>
+es_password: <Elasticsearch User Password>

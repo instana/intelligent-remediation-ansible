@@ -1,0 +1,11 @@
+host_api_server: <Kubernetes API server>
+password: <Password for api token creation>
+username: <User name for api token creation>
+api_version: v1
+namespace: <Namespace>
+limit_name: <Name of LimitRange>
+pod_name: <Name of pod>
+pod_namespece: <Name of namespace pod belongs too>
+
+
+

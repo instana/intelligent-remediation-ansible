@@ -1,0 +1,29 @@
+
+- name: Check the number of rejected threads within Elasticsearch node
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    host: "{{ es_server }}"
+    port: "{{ es_port }}"
+    user: "{{ es_username }}"
+    password: "{{ es_password }}"
+
+  tasks:
+    - name: Check the number of rejected threads within Elasticsearch node
+      uri:
+        url: "http://{{ host }}:{{ port }}/_nodes/stats/thread_pool?pretty"
+        user: "{{ user }}"
+        password: "{{ password }}"
+        method: GET
+        return_content: true
+      register: result
+
+    - name: Print Elasticsearch node thread pool 
+      debug:
+        msg: "{{ result.content | from_json }}"
+
+    - name: Print the number of rejected threads
+      debug:
+#       msg: "{{ result.json.nodes | first | default({}) | json_query('thread_pool.search.rejected') }}"
+        msg: "{{ result.json.nodes | json_query('*.thread_pool[].*.rejected') }}"

@@ -1,0 +1,28 @@
+
+- name: Check Elasticsearch Node JVM heap and workload usage status
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    host: "{{ es_server }}"
+    port: "{{ es_port }}"
+    user: "{{ es_username }}"
+    password: "{{ es_password }}"
+
+  tasks:
+    - name: Check Elasticsearch Node JVM heap and workload usage status
+      uri:
+        url: "http://{{ host }}:{{ port }}/_nodes/stats/jvm,process?pretty"
+        user: "{{ user }}"
+        password: "{{ password }}"
+        method: GET
+        return_content: true
+      register: es_node_status
+
+    - name: Set es_node_status fact
+      set_fact:
+        es_node_status: "{{ es_node_status.content | from_json }}"
+
+    - name: Print Elasticsearch Node JVM heap and workload usage status
+      debug:
+        msg: "{{ es_node_status }}"

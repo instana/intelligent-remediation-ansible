@@ -1,0 +1,20 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Check if the JVM threads are deadlocked
+      shell: "jstack {{ jvm_pid }} | grep -i 'deadlock'"
+      register: jstack_output
+      ignore_errors: yes
+
+    - name: Print jstack output
+      debug:
+        msg: "{{ jstack_output.stdout }}"
+
+    - name: Set fact for deadlock status
+      set_fact:
+        deadlock_status: "{{ jstack_output.rc }}"
+
+    - name: Fail the playbook if the JVM threads are deadlocked
+      fail:
+        msg: "JVM threads are deadlocked"
+      when: deadlock_status == 0

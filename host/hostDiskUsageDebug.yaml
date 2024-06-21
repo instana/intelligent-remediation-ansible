@@ -1,0 +1,10 @@
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Gather disk space usage
+      ansible.builtin.shell: df -h
+      register: df_output
+    - name: Print disk space usage
+      ansible.builtin.debug:
+        msg: "{{ df_output.stdout_lines }}"

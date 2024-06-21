@@ -1,0 +1,12 @@
+
+- hosts: all
+  gather_facts: False
+  tasks:
+    - name: Get memory information
+      ansible.builtin.shell: free -mh
+      register: free_output
+
+    - name: Print memory information
+      debug:
+        msg: "{{ free_output.stdout_lines }}"
+

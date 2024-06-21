@@ -1,0 +1,11 @@
+
+- hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Gather top 10 processes
+      ansible.builtin.shell: ps -eo user,pid,size,pcpu,cmd --sort=-pcpu | head -n 10
+      register: top_processes
+    - name: Print top 10 processes
+      ansible.builtin.debug:
+        msg: "{{ top_processes.stdout_lines }}"

@@ -1,0 +1,13 @@
+- hosts: all
+  become: yes
+# become_method: sudo
+  tasks:
+    - name: check the garbage collection of JVM
+#     shell: "jstat -gc {{ jvm_pid }} | tail -1 | awk '{print $4}'"
+      shell: "/usr/bin/jstat -gc {{ jvm_pid }}"
+      register: jvm_gc
+      ignore_errors: yes
+
+    - name: print the garbage collection of JVM
+      debug:
+        msg: "{{ jvm_gc.stdout }}"

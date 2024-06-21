@@ -1,0 +1,1 @@
+[Remediate] Increase or Decrease replicas on a StatefulSet.

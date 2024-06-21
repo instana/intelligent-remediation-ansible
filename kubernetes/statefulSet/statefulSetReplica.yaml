@@ -1,0 +1,34 @@
+- hosts: all
+  module_defaults:
+    group/k8s:
+      host: "{{host_api_server}}"
+      validate_certs: no
+  tasks:
+   - name: Print the gateway for each host when defined
+     ansible.builtin.debug:
+       msg: Host api server {{host_api_server}}
+   - name: Obtain access token
+     kubernetes.core.k8s_auth:
+       host: "{{host_api_server}}"
+       validate_certs: no
+       username: "{{username}}"
+       password: "{{password}}"
+     register: k8s_auth_results
+   - name: Scale Statefulset
+     kubernetes.core.k8s_scale:
+       api_version: "{{ api_version }}"
+       api_key: "{{ k8s_auth_results.k8s_auth.api_key }}"
+       host: "{{host_api_server}}"
+       kind: StatefulSet
+       name: "{{name}}"
+       namespace: "{{ namespace }}"
+       replicas: "{{replicas}}"
+       wait_timeout: "{{time_to_wait}}"
+       wait: "{{should_wait}}"
+     register: output
+   - name: Display pod info
+     debug:
+       var: output
+   - assert:
+       that:
+         - output.result.status.replicas == "{{replicas}}" | int

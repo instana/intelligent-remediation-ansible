@@ -1,0 +1,1 @@
+[Remediation] Scales pods on a Deployment.

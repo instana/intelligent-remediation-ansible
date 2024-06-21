@@ -1,0 +1,9 @@
+- hosts: all
+  tasks:
+    - name: Check the code cache of JVM
+      shell: "java -XX:+PrintFlagsFinal -version | grep -iE 'maxcodecachesize|initialcodecachesize'"
+      register: jvm_code_cache_size
+
+    - name: Print the code cache of JVM
+      debug:
+        msg: "{{ jvm_code_cache_size.stdout }}"

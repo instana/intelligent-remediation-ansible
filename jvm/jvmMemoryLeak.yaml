@@ -1,0 +1,10 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Check memory usage of JVM
+      shell: "ps -ef | grep java | grep -v grep | awk '{print $2}' | xargs -I {} ps -o rss -p {} | awk '{sum+=$1} END {print sum/1024}'"
+      register: mem_usage
+
+    - name: Print memory usage
+      debug:
+        msg: "Memory usage: {{ mem_usage.stdout }} MB"

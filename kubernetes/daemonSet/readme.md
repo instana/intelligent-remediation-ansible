@@ -1,0 +1,1 @@
+[Diagnostic] Returns daemon set information and status of pods

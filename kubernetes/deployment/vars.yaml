@@ -1,0 +1,7 @@
+host_api_server: <Kubernetes API server>
+password: <Password for api token creation>
+username: <User name for api token creation>
+name: <Name of Deployment>
+namespace: <Namespace>
+replicas: <Number to scale up or down>
+

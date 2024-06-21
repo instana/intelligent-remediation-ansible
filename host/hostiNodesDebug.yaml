@@ -1,0 +1,13 @@
+
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Gather disk inodes usage
+      # ansible.builtin.shell: df -iP | grep -v 'Mounted on' | awk '{print $4}' | sort | uniq -c | sort -n -r
+      ansible.builtin.shell: df -iP 
+      register: inodes
+    - name: Print disk inodes usage
+      ansible.builtin.debug:
+        msg: "{{ inodes.stdout_lines }}"
+

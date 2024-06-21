@@ -1,0 +1,9 @@
+host_api_server: <Kubernetes API server>
+password: <Password for api token creation>
+username: <User name for api token creation>
+api_version: v1
+namespace: <Namespace>
+replicas: 2
+name: <Name of Statefulset>
+time_to_wait: 1
+should_wait: no

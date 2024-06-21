@@ -1,0 +1,11 @@
+
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+  - name: Gather network interface status
+    shell: ip link show
+    register: network_interfaces
+  - name: Print network interface status
+    debug:
+      msg: "{{ network_interfaces.stdout_lines }}"

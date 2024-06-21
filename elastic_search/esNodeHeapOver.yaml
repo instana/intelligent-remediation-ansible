@@ -1,0 +1,25 @@
+
+- name: Get Elasticsearch node jvm heap size and host memory size
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    host: "{{ es_server }}"
+    port: "{{ es_port }}"
+    user: "{{ es_username }}"
+    password: "{{ es_password }}"
+
+  tasks:
+    - name: Get Elasticsearch node jvm heap size and host memory size
+      uri:
+#       url: "http://{{ es_server }}:{{ es_port }}/_nodes/process?filter_path=nodes.*.jvm.mem.heap_init_in_bytes,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.os.mem.total_in_bytes"
+        url: "http://{{ es_server }}:{{ es_port }}/_nodes?filter_path=nodes.*.jvm.mem.heap_init_in_bytes,nodes.*.jvm.mem.heap_max_in_bytes,nodes.*.settings.node.attr.ml.machine_memory"
+        user: "{{ es_username }}"
+        password: "{{ es_password }}"
+        method: GET
+        return_content: true
+      register: es_nodes_info
+
+    - name: Print Elasticsearch node jvm heap size and host memory size
+      debug:
+        msg: "{{ es_nodes_info.json }}"

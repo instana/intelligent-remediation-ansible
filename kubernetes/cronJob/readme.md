@@ -1,0 +1,1 @@
+[Diagnostic] Returns cronjob and status of the last child job. Also displays the jobs.
